@@ -1,77 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Real-Time Sync App</title>
-</head>
-<body>
-  <h1>Real-Time Data Display</h1>
-  
-  <!-- UI elements to view and update data -->
-  <div id="data-container">Loading...</div>
-  
-  <input type="text" id="message-input" placeholder="Type a message..." />
-  <button id="send-btn">Send</button>
-
-  <script type="module">
-    // Import the required Firebase modules from CDN
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
-
-    // 1. Paste your Firebase configuration object here
-    const firebaseConfig = {
-  apiKey: "AIzaSyBiN28Vr4sFtboTREYZ47Ljo9NfVp63FeY",
-  authDomain: "spelling-review-13bdb.firebaseapp.com",
-  databaseURL: "https://spelling-review-13bdb-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "spelling-review-13bdb",
-  storageBucket: "spelling-review-13bdb.firebasestorage.app",
-  messagingSenderId: "980072699869",
-  appId: "1:980072699869:web:7af467a9f6cd0497868834",
-  measurementId: "G-W9C9B2R44V"
-    };
-
-    // 2. Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
-
-    const dataContainer = document.getElementById("data-container");
-    const messageInput = document.getElementById("message-input");
-    const sendBtn = document.getElementById("send-btn");
-
-    // 3. LISTEN FOR REAL-TIME UPDATES
-    // 'onValue' fires once initially and again whenever data at the path updates
-    const messageRef = ref(db, 'liveData/message');
-    
-    onValue(messageRef, (snapshot) => {
-      const data = snapshot.val();
-      dataContainer.innerText = data ? data : "No data set yet.";
-    });
-
-    // 4. WRITE DATA TO FIREBASE
-    sendBtn.addEventListener("click", () => {
-      const text = messageInput.value;
-      if (text.trim() !== "") {
-        set(messageRef, text)
-          .then(() => {
-            messageInput.value = "";
-          })
-          .catch((error) => {
-            console.error("Error writing data: ", error);
-          });
-      }
-    });
-  </script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="en" class="h-full bg-slate-900 text-slate-100 font-sans">
+<html lang="en" class="h-full bg-slate-950 text-slate-100 font-sans selection:bg-brand-500 selection:text-white">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Spelling Sentence Showcase</title>
-  
-  <!-- Tailwind CSS -->
+  <title>Spelling Sentence Showcase - Real-Time Classroom Arena</title>
+
+  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -95,25 +29,26 @@
               pink: '#f43f5e',
               emerald: '#10b981',
               purple: '#8b5cf6',
+              amber: '#f59e0b',
             }
           },
           animation: {
             'pop-in': 'popIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
+            'bounce-gentle': 'bounceGentle 2.5s infinite',
             'pulse-glow': 'pulseGlow 2s infinite',
-            'bounce-gentle': 'bounceGentle 2s infinite',
           },
           keyframes: {
             popIn: {
-              '0%': { opacity: '0', transform: 'scale(0.8) translateY(20px)' },
+              '0%': { opacity: '0', transform: 'scale(0.85) translateY(12px)' },
               '100%': { opacity: '1', transform: 'scale(1) translateY(0)' },
             },
-            pulseGlow: {
-              '0%, 100%': { boxShadow: '0 0 15px rgba(251, 191, 36, 0.4)' },
-              '50%': { boxShadow: '0 0 30px rgba(251, 191, 36, 0.8)' },
-            },
             bounceGentle: {
-              '0%, 100%': { transform: 'translateY(-3%)' },
+              '0%, 100%': { transform: 'translateY(-4%)' },
               '50%': { transform: 'translateY(0)' },
+            },
+            pulseGlow: {
+              '0%, 100%': { boxShadow: '0 0 15px rgba(251, 191, 36, 0.3)' },
+              '50%': { boxShadow: '0 0 35px rgba(251, 191, 36, 0.8)' },
             }
           }
         }
@@ -121,132 +56,156 @@
     }
   </script>
 
-  <!-- Google Fonts -->
+  <!-- Google Fonts: Fredoka & Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 
-  <!-- Font Awesome Icons -->
+  <!-- Font Awesome 6 Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <!-- Canvas Confetti Library -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
   <style>
-    /* Custom scrollbar for TV grid */
+    /* Custom Scrollbar */
     ::-webkit-scrollbar {
-      width: 10px;
+      width: 8px;
+      height: 8px;
     }
     ::-webkit-scrollbar-track {
-      background: rgba(15, 23, 42, 0.6);
+      background: rgba(15, 23, 42, 0.8);
     }
     ::-webkit-scrollbar-thumb {
       background: rgba(56, 189, 248, 0.3);
-      border-radius: 5px;
+      border-radius: 9999px;
     }
     ::-webkit-scrollbar-thumb:hover {
       background: rgba(56, 189, 248, 0.6);
     }
 
-    /* Target Word Highlighting Styles */
+    /* Target Word Highlight Pill in Sentence Cards */
     .word-highlight {
       background: linear-gradient(120deg, #fef08a 0%, #fde047 100%);
-      color: #713f12;
+      color: #0f172a;
       font-weight: 800;
-      padding: 0.15rem 0.4rem;
-      border-radius: 0.375rem;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.15);
-      border: 1px solid #facc15;
+      padding: 0.15rem 0.5rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 0 12px rgba(253, 224, 71, 0.6);
+      border: 1.5px solid #eab308;
       display: inline-block;
-      text-decoration: underline decoration-wavy #ca8a04;
     }
 
+    /* Masked Text Blur for Guessing Game */
     .masked-text {
       filter: blur(8px);
       user-select: none;
       transition: filter 0.3s ease;
     }
     .masked-text:hover {
-      filter: blur(4px);
+      filter: blur(2px);
     }
 
-    .card-star-glow {
-      box-shadow: 0 0 25px rgba(251, 191, 36, 0.5), inset 0 0 15px rgba(251, 191, 36, 0.2);
+    /* Card Starred Glow Animation */
+    .card-starred {
+      box-shadow: 0 0 30px rgba(251, 191, 36, 0.45), inset 0 0 20px rgba(251, 191, 36, 0.15);
       border-color: #fbbf24 !important;
+    }
+
+    /* Print styling support */
+    @media print {
+      body {
+        background: white !important;
+        color: black !important;
+      }
+      #global-header, #tv-controls-bar, .no-print {
+        display: none !important;
+      }
+      .print-card {
+        border: 1px solid #ccc !important;
+        page-break-inside: avoid;
+        color: black !important;
+        background: white !important;
+      }
     }
   </style>
 </head>
-<body class="h-full flex flex-col antialiased selection:bg-brand-500 selection:text-white">
+<body class="h-full flex flex-col antialiased bg-slate-950">
 
-  <!-- Application Root Container -->
   <div id="app" class="h-full flex flex-col relative overflow-hidden">
     
-    <!-- Top Global Header / Navigation -->
-    <header id="global-header" class="bg-slate-950/80 backdrop-blur-md border-b border-slate-800 px-4 py-3 flex items-center justify-between z-30 shrink-0">
+    <!-- Top Global Header -->
+    <header id="global-header" class="bg-slate-900/90 backdrop-blur-md border-b border-slate-800 px-4 py-3 flex items-center justify-between z-30 shrink-0 shadow-lg">
       <div class="flex items-center space-x-3 cursor-pointer" onclick="app.showLanding()">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-500 to-accent-purple flex items-center justify-center text-white shadow-lg shadow-brand-500/30">
-          <i class="fa-solid font-bold fa-spell-check text-xl"></i>
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-500 via-accent-purple to-accent-pink flex items-center justify-center text-white shadow-md shadow-brand-500/20">
+          <i class="fa-solid fa-spell-check text-xl"></i>
         </div>
         <div>
-          <h1 class="font-display text-xl font-bold bg-gradient-to-r from-brand-400 via-accent-purple to-accent-pink bg-clip-text text-transparent">
+          <h1 class="font-display text-xl font-extrabold bg-gradient-to-r from-brand-400 via-accent-purple to-accent-amber bg-clip-text text-transparent">
             Spelling Sentence Showcase
           </h1>
-          <p class="text-xs text-slate-400 font-medium">Real-Time Classroom Writing Arena</p>
+          <p class="text-[11px] text-slate-400 font-semibold tracking-wide">Live Classroom Writing Arena</p>
         </div>
       </div>
 
-      <!-- Header Mode Status & Quick Switch -->
-      <div class="flex items-center space-x-3">
-        <span id="room-code-badge" class="hidden px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-xs font-mono font-bold text-slate-300">
-          ROOM: <span id="header-room-id" class="text-brand-400">---</span>
+      <!-- Live Connection Pill & Global Actions -->
+      <div class="flex items-center space-x-2 sm:space-x-3">
+        <!-- Live Firebase Connection Status Pill -->
+        <div id="connection-pill" class="px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-xs font-bold text-slate-300 flex items-center space-x-2">
+          <span id="conn-dot" class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span id="conn-text" class="hidden sm:inline">🟢 Live Sync: spelling-review-13bdb</span>
+        </div>
+
+        <!-- Room Code Badge -->
+        <span id="header-room-badge" class="hidden px-3 py-1 rounded-full bg-brand-500/10 border border-brand-500/30 text-xs font-mono font-extrabold text-brand-300">
+          ROOM: <span id="header-room-id">CLASS1</span>
         </span>
-        <button id="sfx-toggle-btn" onclick="app.toggleSFX()" class="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 transition-all text-sm flex items-center space-x-1" title="Toggle Sound Effects">
+
+        <!-- Audio Toggle Button -->
+        <button id="sfx-btn" onclick="app.toggleSFX()" class="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 transition-all text-xs flex items-center space-x-1" title="Toggle Sound Effects">
           <i id="sfx-icon" class="fa-solid fa-volume-high text-brand-400"></i>
         </button>
-        <button onclick="app.showLanding()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 text-xs font-semibold transition-all">
-          <i class="fa-solid fa-arrow-right-from-bracket mr-1"></i> Exit Mode
+
+        <!-- Home Button -->
+        <button onclick="app.showLanding()" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 text-xs font-semibold transition-all flex items-center space-x-1">
+          <i class="fa-solid fa-house"></i>
+          <span class="hidden sm:inline">Home</span>
         </button>
       </div>
     </header>
 
-    <!-- MAIN VIEW CONTAINER -->
+    <!-- Main View Dynamic Container -->
     <main id="view-container" class="flex-1 relative overflow-hidden flex flex-col">
-      <!-- Dynamic Views Injected Here -->
+      <!-- Dynamic Views (Landing, TV, Student) Injected Here -->
     </main>
 
   </div>
 
-  <!-- MODAL CONTAINER (FOR DIALOGS & SPOTLIGHTS) -->
-  <div id="modal-backdrop" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 transition-opacity">
-    <div id="modal-content" class="bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl max-w-2xl w-full p-6 relative max-h-[90vh] overflow-y-auto">
-      <!-- Dynamic Modal Content -->
+  <div id="modal-backdrop" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 transition-opacity">
+    <div id="modal-content" class="bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl max-w-3xl w-full p-6 relative max-h-[90vh] overflow-y-auto">
+      <!-- Modal Content Dynamically Injected -->
     </div>
   </div>
 
-  <!-- FIREBASE MODULE & CLIENT SCRIPT -->
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import { 
       getAuth, 
       signInAnonymously, 
-      signInWithCustomToken, 
-      onAuthStateChanged 
-    } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+      signInWithCustomToken 
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
     import { 
       getFirestore, 
       doc, 
       setDoc, 
-      getDoc, 
       collection, 
       onSnapshot, 
       addDoc, 
       updateDoc, 
-      deleteDoc,
-      serverTimestamp
-    } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+      deleteDoc 
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-    // --- Web Audio Synthesizer for Reliable Offline/Online Sound Effects ---
-    class AudioFX {
+    class WebAudioFX {
       constructor() {
         this.enabled = true;
         this.ctx = null;
@@ -259,7 +218,7 @@
         }
       }
 
-      playTone(freq, type, duration, gainVal = 0.15) {
+      playTone(freq, type, duration, gainVal = 0.12) {
         if (!this.enabled) return;
         this.init();
         if (!this.ctx) return;
@@ -278,200 +237,200 @@
 
           osc.start();
           osc.stop(this.ctx.currentTime + duration);
-        } catch(e) { console.warn("Audio play error", e); }
+        } catch(e) { console.warn("Audio error", e); }
       }
 
-      submit() {
-        // Happy ascending chord
+      submitPop() {
         [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
-          setTimeout(() => this.playTone(freq, 'sine', 0.2, 0.12), idx * 60);
+          setTimeout(() => this.playTone(freq, 'sine', 0.2, 0.1), idx * 50);
         });
       }
 
-      star() {
-        // Magical sparkle sound
+      starFanfare() {
         [1046.50, 1318.51, 1567.98, 2093.00, 2637.02].forEach((freq, idx) => {
-          setTimeout(() => this.playTone(freq, 'triangle', 0.3, 0.15), idx * 50);
+          setTimeout(() => this.playTone(freq, 'triangle', 0.3, 0.14), idx * 45);
         });
       }
 
-      reveal() {
-        this.playTone(440, 'sine', 0.15, 0.1);
-        setTimeout(() => this.playTone(880, 'sine', 0.25, 0.12), 100);
+      spotlightChime() {
+        this.playTone(880, 'sine', 0.2, 0.1);
+        setTimeout(() => this.playTone(1318.51, 'sine', 0.25, 0.12), 80);
       }
 
       wordChange() {
-        this.playTone(330, 'triangle', 0.1, 0.1);
-        setTimeout(() => this.playTone(493.88, 'sine', 0.2, 0.15), 80);
+        this.playTone(392.00, 'triangle', 0.1, 0.08);
+        setTimeout(() => this.playTone(523.25, 'sine', 0.2, 0.12), 70);
       }
     }
 
-    const audio = new AudioFX();
+    const audio = new WebAudioFX();
 
-    // --- Global Application State ---
-    const appId = typeof __app_id !== 'undefined' ? __app_id : 'spelling-showcase-v1';
-    let firebaseConfig = null;
-    try {
-      if (typeof __firebase_config !== 'undefined') {
-        firebaseConfig = JSON.parse(__firebase_config);
-      }
-    } catch (e) {
-      console.warn("Firebase config parse error", e);
-    }
-
-    // Default Fallback Config if environment config isn't provided directly
-    if (!firebaseConfig) {
-      firebaseConfig = {
-        apiKey: "demo-api-key",
-        authDomain: "demo-app.firebaseapp.com",
-        projectId: "demo-app",
-        storageBucket: "demo-app.appspot.com",
-        messagingSenderId: "1234567890",
-        appId: "1:1234567890:web:1234567890"
-      };
-    }
-
-    let firebaseApp = null;
-    let db = null;
-    let auth = null;
-    let currentUser = null;
-
-    // Presets for Spelling Lists
     const SPELLING_PRESETS = {
       "Grade 4/5 Tricky Words": [
-        { word: "mischievous", hint: "Naughty or playfully troublesome." },
-        { word: "extravagant", hint: "Lacking restraint in spending money or using resources." },
-        { word: "guarantee", hint: "A formal promise or assurance that certain conditions will be fulfilled." },
-        { word: "pester", hint: "Trouble or annoy someone with frequent requests." },
-        { word: "bizarre", hint: "Very strange or unusual." },
-        { word: "camouflaged", hint: "Disguised to blend into surroundings." },
-        { word: "silhouette", hint: "The dark shape and outline of someone or something against a light background." }
+        { word: "ancient", hint: "Belonging to the very distant past." },
+        { word: "mischief", hint: "Playful misbehavior or trouble." },
+        { word: "disaster", hint: "A sudden event causing great damage or loss." },
+        { word: "invisible", hint: "Unable to be seen." },
+        { word: "dinosaur", hint: "A fossil reptile of the Mesozoic era." },
+        { word: "guarantee", hint: "A formal promise that something will work." },
+        { word: "silhouette", hint: "A dark shape outlined against a lighter background." }
       ],
       "Funny & Silly Words": [
         { word: "gobbledygook", hint: "Language that is meaningless or impossible to understand." },
         { word: "bamboozle", hint: "To fool or cheat someone." },
         { word: "flabbergasted", hint: "Greatly surprised or astonished." },
-        { word: "shenanigans", hint: "Secret or dishonest activity, or silly pranks." },
-        { word: "discombobulate", hint: "To disconnect or confuse." },
-        { word: "nincompoop", hint: "A foolish or stupid person." }
+        { word: "shenanigans", hint: "Secretive or dishonest activity, or silly pranks." },
+        { word: "discombobulate", hint: "To confuse or upset someone." }
       ],
-      "Sci-Fi & Fantasy": [
+      "Sci-Fi & Fantasy Words": [
         { word: "teleportation", hint: "Moving instantly from one location to another." },
         { word: "extraterrestrial", hint: "Originating from outside the Earth." },
-        { word: "cataclysmic", hint: "Relating to or causing violent natural events or disasters." },
-        { word: "clandestine", hint: "Kept secret or done secretively." },
-        { word: "invincible", hint: "Too powerful to be defeated or overcome." }
+        { word: "invincible", hint: "Too powerful to be defeated." },
+        { word: "cataclysmic", hint: "Relating to a violent natural event." }
       ]
     };
 
-    class App {
+    const firebaseConfig = {
+      apiKey: "AIzaSyBiN28Vr4sFtboTREYZ47Ljo9NfVp63FeY",
+      authDomain: "spelling-review-13bdb.firebaseapp.com",
+      databaseURL: "https://spelling-review-13bdb-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "spelling-review-13bdb",
+      storageBucket: "spelling-review-13bdb.firebasestorage.app",
+      messagingSenderId: "980072699869",
+      appId: "1:980072699869:web:7af467a9f6cd0497868834",
+      measurementId: "G-W9C9B2R44V"
+    };
+
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'spelling-review-13bdb';
+
+    class SpellingShowcaseApp {
       constructor() {
         this.mode = 'landing'; // 'landing' | 'tv' | 'student'
-        this.roomCode = 'SPELL25';
+        this.roomCode = localStorage.getItem('spelling_room_code') || 'CLASS1';
         this.studentName = localStorage.getItem('spelling_student_name') || '';
+        this.studentAvatar = localStorage.getItem('spelling_student_avatar') || '🦊';
+        
         this.submissions = [];
         this.roomData = {
-          activeWord: 'mischievous',
-          wordHint: 'Naughty or playfully troublesome.',
+          activeWord: 'ancient',
+          wordHint: 'Belonging to the very distant past.',
           isAnonymous: false,
           isMasked: false,
           wordList: SPELLING_PRESETS["Grade 4/5 Tricky Words"],
           currentWordIndex: 0
         };
+
+        this.spotlightIndex = 0;
+
+        this.firebaseApp = null;
+        this.db = null;
+        this.auth = null;
+        this.currentUser = null;
+        this.isOnline = false;
+
         this.unsubscribeRoom = null;
         this.unsubscribeSubmissions = null;
-        this.isOnline = false;
       }
 
       async init() {
-        try {
-          firebaseApp = initializeApp(firebaseConfig);
-          db = getFirestore(firebaseApp);
-          auth = getAuth(firebaseApp);
-
-          // Authenticate per RULE 3
-          if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-            await signInWithCustomToken(auth, __initial_auth_token);
-          } else {
-            await signInAnonymously(auth);
-          }
-
-          onAuthStateChanged(auth, (user) => {
-            if (user) {
-              currentUser = user;
-              this.isOnline = true;
-              console.log("Firebase Auth Ready. UID:", user.uid);
-            }
-          });
-        } catch (e) {
-          console.warn("Firestore initialization warning. Running in fallback dynamic state.", e);
-        }
-
+        await this.setupFirebase();
         this.showLanding();
       }
 
-      toggleSFX() {
-        audio.enabled = !audio.enabled;
-        const icon = document.getElementById('sfx-icon');
-        if (icon) {
-          icon.className = audio.enabled 
-            ? 'fa-solid fa-volume-high text-brand-400' 
-            : 'fa-solid fa-volume-xmark text-slate-500';
+      async setupFirebase() {
+        try {
+          // Initialize Firebase
+          this.firebaseApp = initializeApp(firebaseConfig);
+          this.db = getFirestore(this.firebaseApp);
+          this.auth = getAuth(this.firebaseApp);
+
+          // Isolate Auth attempts so token mismatches do not block Firestore sync
+          try {
+            const userCred = await signInAnonymously(this.auth);
+            this.currentUser = userCred.user;
+          } catch (anonErr) {
+            console.warn("Anonymous auth note:", anonErr?.message || anonErr);
+            if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+              try {
+                const userCred = await signInWithCustomToken(this.auth, __initial_auth_token);
+                this.currentUser = userCred.user;
+              } catch (tokenErr) {
+                console.warn("Custom token auth note:", tokenErr?.message || tokenErr);
+              }
+            }
+          }
+
+          this.isOnline = true;
+          this.updateConnPill(true, "🟢 Live Sync: spelling-review-13bdb");
+          console.log("Firebase initialized successfully. User:", this.currentUser?.uid || "Unauthenticated Sync");
+        } catch (err) {
+          console.error("Firebase setup failed:", err);
+          this.isOnline = false;
+          this.updateConnPill(false, "🔴 Offline Mode");
         }
       }
 
-      // --- Firestore Subscriptions & Firestore Path Rules ---
+      updateConnPill(online, text) {
+        const dot = document.getElementById('conn-dot');
+        const textEl = document.getElementById('conn-text');
+        if (dot) {
+          dot.className = online ? "w-2.5 h-2.5 rounded-full bg-emerald-400" : "w-2.5 h-2.5 rounded-full bg-rose-500 animate-pulse";
+        }
+        if (textEl) textEl.innerText = text;
+      }
+
       subscribeToRoom(roomCode) {
         if (this.unsubscribeRoom) this.unsubscribeRoom();
         if (this.unsubscribeSubmissions) this.unsubscribeSubmissions();
 
         this.roomCode = roomCode.toUpperCase().trim();
+        localStorage.setItem('spelling_room_code', this.roomCode);
+
         document.getElementById('header-room-id').innerText = this.roomCode;
-        document.getElementById('room-code-badge').classList.remove('hidden');
+        document.getElementById('header-room-badge').classList.remove('hidden');
 
-        if (!this.isOnline || !db) {
-          // Fallback local memory subscription simulation if offline
-          return;
-        }
+        if (!this.isOnline || !this.db) return;
 
-        // Firestore RULE 1 Path for Public Room Data
-        const roomDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'showcase_rooms', this.roomCode);
+        // MANDATORY RULE 1: Strict Paths
+        // Path: /artifacts/{appId}/public/data/spelling_rooms/{roomCode}
+        const roomDocRef = doc(this.db, 'artifacts', appId, 'public', 'data', 'spelling_rooms', this.roomCode);
 
-        // Firestore Room Listener with mandatory Error Callback
+        // Listener for Room State with Mandatory Error Callback
         this.unsubscribeRoom = onSnapshot(roomDocRef, (docSnap) => {
           if (docSnap.exists()) {
             this.roomData = docSnap.data();
             this.renderCurrentMode();
           } else if (this.mode === 'tv') {
-            // Initialize room document if TV mode teacher creates it
+            // Teacher initializes room document
             this.saveRoomData();
           }
         }, (error) => {
           console.error("Room listener error:", error);
         });
 
-        // Firestore Submissions Path - Using Simple Collection per RULE 2 (Filter in JS)
-        const subColRef = collection(db, 'artifacts', appId, 'public', 'data', 'showcase_submissions');
+        // MANDATORY RULE 2: Fetch simple collection & filter in JS memory
+        // Path: /artifacts/{appId}/public/data/spelling_submissions
+        const subColRef = collection(this.db, 'artifacts', appId, 'public', 'data', 'spelling_submissions');
 
         this.unsubscribeSubmissions = onSnapshot(subColRef, (snapshot) => {
           const rawDocs = [];
-          snapshot.forEach((doc) => {
-            const data = doc.data();
-            data.id = doc.id;
-            // RULE 2: Filter in JS memory by room code
+          snapshot.forEach((docSnap) => {
+            const data = docSnap.data();
+            data.id = docSnap.id;
+            // JS Memory filter by roomCode per RULE 2
             if (data.roomCode === this.roomCode) {
               rawDocs.push(data);
             }
           });
-          
-          // Sort by creation time descending in JS memory
+
+          // Sort descending by creation timestamp
           rawDocs.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
 
           const prevCount = this.submissions.length;
           this.submissions = rawDocs;
 
           if (rawDocs.length > prevCount && prevCount > 0) {
-            audio.submit();
+            audio.submitPop();
           }
 
           if (this.mode === 'tv') {
@@ -485,9 +444,9 @@
       }
 
       async saveRoomData() {
-        if (!this.isOnline || !db) return;
+        if (!this.isOnline || !this.db) return;
         try {
-          const roomDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'showcase_rooms', this.roomCode);
+          const roomDocRef = doc(this.db, 'artifacts', appId, 'public', 'data', 'spelling_rooms', this.roomCode);
           await setDoc(roomDocRef, {
             ...this.roomData,
             roomCode: this.roomCode,
@@ -498,71 +457,105 @@
         }
       }
 
-      // --- Mode View Switchers ---
+      toggleSFX() {
+        audio.enabled = !audio.enabled;
+        const icon = document.getElementById('sfx-icon');
+        if (icon) {
+          icon.className = audio.enabled 
+            ? 'fa-solid fa-volume-high text-brand-400' 
+            : 'fa-solid fa-volume-xmark text-slate-500';
+        }
+      }
+
       showLanding() {
         this.mode = 'landing';
-        document.getElementById('room-code-badge').classList.add('hidden');
-        
+        document.getElementById('header-room-badge').classList.add('hidden');
+
         const container = document.getElementById('view-container');
         container.innerHTML = `
-          <div class="h-full w-full overflow-y-auto flex flex-col items-center justify-center p-6 bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950">
-            <div class="max-w-4xl w-full grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
+          <div class="h-full w-full overflow-y-auto flex flex-col items-center justify-center p-6 bg-slate-950">
+            
+            <div class="text-center max-w-2xl mb-8 animate-pop-in">
+              <span class="px-4 py-1.5 rounded-full bg-brand-500/10 border border-brand-500/30 text-brand-300 font-extrabold text-xs tracking-wider uppercase inline-block mb-3">
+                <i class="fa-solid fa-bolt mr-1 text-accent-yellow"></i> Real-time Classroom Showcase
+              </span>
+              <h2 class="font-display text-4xl sm:text-5xl font-black text-white tracking-tight">
+                Spelling Sentence Showcase
+              </h2>
+              <p class="text-slate-400 text-sm sm:text-base mt-2">
+                Connect 25+ student Chromebooks live to your classroom TV display!
+              </p>
+            </div>
+
+            <div class="max-w-4xl w-full grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
               
-              <!-- TV Display / Teacher Host Card -->
-              <div class="bg-slate-800/80 backdrop-blur-md border border-slate-700/80 rounded-3xl p-8 flex flex-col justify-between hover:border-brand-500/50 transition-all shadow-2xl relative overflow-hidden group">
-                <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-brand-500/10 rounded-full blur-3xl group-hover:bg-brand-500/20 transition-all"></div>
+              <!-- TV Display Card -->
+              <div class="bg-slate-900 border-2 border-slate-800 hover:border-brand-500/60 rounded-3xl p-6 sm:p-8 flex flex-col justify-between shadow-2xl transition-all relative overflow-hidden group">
+                <div class="absolute -right-12 -bottom-12 w-44 h-44 bg-brand-500/10 rounded-full blur-3xl group-hover:bg-brand-500/20 transition-all"></div>
+                
                 <div>
-                  <div class="w-16 h-16 rounded-2xl bg-brand-500/20 text-brand-400 flex items-center justify-center text-3xl mb-6 shadow-inner">
+                  <div class="w-16 h-16 rounded-2xl bg-brand-500/20 text-brand-400 flex items-center justify-center text-3xl mb-4 shadow-inner">
                     <i class="fa-solid fa-tv"></i>
                   </div>
-                  <span class="px-3 py-1 rounded-full bg-brand-500/20 text-brand-300 font-semibold text-xs uppercase tracking-wider">Teacher / Host</span>
-                  <h2 class="text-2xl font-display font-bold text-white mt-3 mb-2">Classroom TV Display</h2>
-                  <p class="text-slate-300 text-sm leading-relaxed mb-6">
-                    Project live submitted sentences on your 1080p/4K classroom TV or board. Manage spelling word lists, highlight target words, award stars, and toggle masked modes.
+                  <span class="px-3 py-1 rounded-full bg-brand-500/20 text-brand-300 font-bold text-xs uppercase tracking-wider">Teacher / Host</span>
+                  <h3 class="text-2xl font-display font-extrabold text-white mt-2 mb-2">Classroom TV Display</h3>
+                  <p class="text-slate-400 text-sm leading-relaxed mb-6">
+                    Project sentences on the big board. Spotlight sentences, award gold stars, switch active spelling words, and mask names for guessing games!
                   </p>
                 </div>
 
-                <div class="space-y-4">
+                <div class="space-y-3">
                   <div>
-                    <label class="block text-xs font-semibold text-slate-400 mb-1.5 uppercase">Session Room Code</label>
-                    <input type="text" id="host-room-input" value="SPELL25" maxlength="8" 
-                      class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-4 py-3 text-xl font-mono font-bold text-brand-400 tracking-wider focus:outline-none focus:border-brand-500 uppercase">
+                    <label class="block text-xs font-bold text-slate-400 mb-1 uppercase tracking-wider">Classroom Code</label>
+                    <input type="text" id="host-room-input" value="${this.roomCode}" maxlength="8"
+                      class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-2xl font-mono font-black text-brand-400 tracking-widest focus:outline-none focus:border-brand-500 uppercase">
                   </div>
                   <button onclick="app.startTVMode()" 
-                    class="w-full py-4 bg-gradient-to-r from-brand-500 to-brand-600 hover:from-brand-400 hover:to-brand-500 text-white font-display font-bold text-lg rounded-xl shadow-lg shadow-brand-500/30 transition-all active:scale-[0.98] flex items-center justify-center space-x-2">
+                    class="w-full py-4 bg-gradient-to-r from-brand-500 to-brand-600 hover:from-brand-400 hover:to-brand-500 text-white font-display font-bold text-lg rounded-xl shadow-lg shadow-brand-500/25 transition-all active:scale-[0.98] flex items-center justify-center space-x-2">
                     <i class="fa-solid fa-play"></i>
                     <span>Launch TV Display</span>
                   </button>
                 </div>
               </div>
 
-              <!-- Student Chromebook Join Card -->
-              <div class="bg-slate-800/80 backdrop-blur-md border border-slate-700/80 rounded-3xl p-8 flex flex-col justify-between hover:border-accent-purple/50 transition-all shadow-2xl relative overflow-hidden group">
-                <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-accent-purple/10 rounded-full blur-3xl group-hover:bg-accent-purple/20 transition-all"></div>
+              <!-- Student Chromebook Card -->
+              <div class="bg-slate-900 border-2 border-slate-800 hover:border-accent-purple/60 rounded-3xl p-6 sm:p-8 flex flex-col justify-between shadow-2xl transition-all relative overflow-hidden group">
+                <div class="absolute -right-12 -bottom-12 w-44 h-44 bg-accent-purple/10 rounded-full blur-3xl group-hover:bg-accent-purple/20 transition-all"></div>
+                
                 <div>
-                  <div class="w-16 h-16 rounded-2xl bg-accent-purple/20 text-accent-purple flex items-center justify-center text-3xl mb-6 shadow-inner">
+                  <div class="w-16 h-16 rounded-2xl bg-accent-purple/20 text-accent-purple flex items-center justify-center text-3xl mb-4 shadow-inner">
                     <i class="fa-solid fa-laptop"></i>
                   </div>
-                  <span class="px-3 py-1 rounded-full bg-accent-purple/20 text-purple-300 font-semibold text-xs uppercase tracking-wider">Student Mode</span>
-                  <h2 class="text-2xl font-display font-bold text-white mt-3 mb-2">Student Chromebook</h2>
-                  <p class="text-slate-300 text-sm leading-relaxed mb-6">
-                    Join the classroom room code, get active target spelling word alerts, write silly or creative sentences, and send them directly to the main display screen!
+                  <span class="px-3 py-1 rounded-full bg-accent-purple/20 text-purple-300 font-bold text-xs uppercase tracking-wider">Student Writer</span>
+                  <h3 class="text-2xl font-display font-extrabold text-white mt-2 mb-2">Student Chromebook</h3>
+                  <p class="text-slate-400 text-sm leading-relaxed mb-6">
+                    Join the class room, see active target spelling words, build silly sentences, and send them live to the classroom TV screen!
                   </p>
                 </div>
 
                 <div class="space-y-3">
-                  <div>
-                    <label class="block text-xs font-semibold text-slate-400 mb-1 uppercase">Your First Name</label>
-                    <input type="text" id="student-name-input" placeholder="e.g. Maya or Leo" value="${this.studentName}"
-                      class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-4 py-2.5 text-base font-semibold text-white focus:outline-none focus:border-accent-purple">
+                  <div class="grid grid-cols-3 gap-2">
+                    <div class="col-span-2">
+                      <label class="block text-xs font-bold text-slate-400 mb-1 uppercase tracking-wider">Student Name</label>
+                      <input type="text" id="student-name-input" placeholder="e.g. Maya or Leo" value="${this.studentName}"
+                        class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm font-bold text-white focus:outline-none focus:border-accent-purple">
+                    </div>
+                    <div>
+                      <label class="block text-xs font-bold text-slate-400 mb-1 uppercase tracking-wider">Avatar</label>
+                      <select id="student-avatar-input" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-2 py-2.5 text-base focus:outline-none focus:border-accent-purple">
+                        ${['🦊', '🦁', '🤖', '🚀', '🐱', '🦄', '🐲', '🐼', '👾', '🦖', '🍕', '⚡'].map(a => `<option value="${a}" ${this.studentAvatar === a ? 'selected' : ''}>${a}</option>`).join('')}
+                      </select>
+                    </div>
                   </div>
+
                   <div>
-                    <label class="block text-xs font-semibold text-slate-400 mb-1 uppercase">Classroom Room Code</label>
-                    <input type="text" id="student-room-input" value="SPELL25" maxlength="8"
-                      class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-4 py-2.5 text-lg font-mono font-bold text-accent-purple tracking-wider focus:outline-none focus:border-accent-purple uppercase">
+                    <label class="block text-xs font-bold text-slate-400 mb-1 uppercase tracking-wider">Classroom Code</label>
+                    <input type="text" id="student-room-input" value="${this.roomCode}" maxlength="8"
+                      class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-xl font-mono font-black text-accent-purple tracking-widest focus:outline-none focus:border-accent-purple uppercase">
                   </div>
+
                   <button onclick="app.startStudentMode()" 
-                    class="w-full py-3.5 bg-gradient-to-r from-accent-purple to-purple-600 hover:from-purple-500 hover:to-accent-purple text-white font-display font-bold text-lg rounded-xl shadow-lg shadow-purple-500/30 transition-all active:scale-[0.98] flex items-center justify-center space-x-2">
+                    class="w-full py-3.5 bg-gradient-to-r from-accent-purple to-purple-600 hover:from-purple-500 hover:to-accent-purple text-white font-display font-bold text-lg rounded-xl shadow-lg shadow-purple-500/25 transition-all active:scale-[0.98] flex items-center justify-center space-x-2">
                     <i class="fa-solid fa-right-to-bracket"></i>
                     <span>Join Class Showcase</span>
                   </button>
@@ -570,32 +563,42 @@
               </div>
 
             </div>
+
+            <div class="mt-8 text-center text-xs text-slate-500">
+              <p>Connected to Firebase Project: <strong class="text-slate-400">spelling-review-13bdb</strong></p>
+            </div>
+
           </div>
         `;
       }
 
       startTVMode() {
         const input = document.getElementById('host-room-input');
-        const roomCode = input ? input.value : 'SPELL25';
+        const code = input ? input.value : this.roomCode;
         this.mode = 'tv';
-        this.subscribeToRoom(roomCode);
+        this.subscribeToRoom(code);
         this.renderTVLayout();
       }
 
       startStudentMode() {
         const nameInput = document.getElementById('student-name-input');
         const roomInput = document.getElementById('student-room-input');
-        
+        const avatarInput = document.getElementById('student-avatar-input');
+
         const name = nameInput ? nameInput.value.trim() : '';
-        const code = roomInput ? roomInput.value.trim() : 'SPELL25';
+        const code = roomInput ? roomInput.value.trim() : this.roomCode;
+        const avatar = avatarInput ? avatarInput.value : '🦊';
 
         if (!name) {
-          this.showToast("Please enter your name to join!");
+          this.showToast("Please enter your name to join!", "warning");
           return;
         }
 
         this.studentName = name;
+        this.studentAvatar = avatar;
         localStorage.setItem('spelling_student_name', name);
+        localStorage.setItem('spelling_student_avatar', avatar);
+
         this.mode = 'student';
         this.subscribeToRoom(code);
         this.renderStudentLayout();
@@ -610,16 +613,14 @@
         }
       }
 
-      // --- TV MODE DISPLAY CONTROLLER ---
       renderTVLayout() {
         const container = document.getElementById('view-container');
         container.innerHTML = `
           <div class="h-full flex flex-col bg-slate-950 p-4 lg:p-6 overflow-hidden">
             
-            <!-- TOP TV BANNER: Spotlight Word & Join Code -->
-            <div class="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 border-2 border-brand-500/40 rounded-3xl p-6 shadow-2xl mb-6 relative overflow-hidden flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+            <!-- TV TOP HERO BANNER -->
+            <div class="bg-gradient-to-r from-slate-900 via-slate-850 to-slate-900 border-2 border-brand-500/40 rounded-3xl p-5 lg:p-6 shadow-2xl mb-5 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 relative overflow-hidden">
               
-              <!-- Left Spotlight: Target Spelling Word -->
               <div class="flex items-center space-x-5 z-10">
                 <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-accent-yellow to-amber-500 flex items-center justify-center text-slate-950 text-3xl font-black shadow-lg shadow-amber-500/20">
                   <i class="fa-solid fa-lightbulb"></i>
@@ -627,26 +628,26 @@
                 <div>
                   <div class="flex items-center space-x-3">
                     <span class="text-xs font-bold uppercase tracking-widest text-amber-400">Target Spelling Word</span>
-                    <button onclick="app.speakWord()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-0.5 rounded-full border border-slate-700 transition-all">
-                      <i class="fa-solid fa-volume-high text-brand-400 mr-1"></i> Listen
+                    <button onclick="app.speakWord()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-0.5 rounded-full border border-slate-700 transition-all">
+                      <i class="fa-solid fa-volume-high text-brand-400 mr-1"></i> Hear Word
                     </button>
                   </div>
-                  <h2 id="tv-target-word" class="font-display text-4xl lg:text-5xl font-extrabold text-white tracking-wide capitalize drop-shadow-md">
+                  <h2 id="tv-target-word" class="font-display text-4xl lg:text-5xl font-black text-white tracking-wide capitalize drop-shadow">
                     ${this.roomData.activeWord}
                   </h2>
-                  <p id="tv-target-hint" class="text-slate-300 text-sm lg:text-base mt-1 italic max-w-xl">
-                    "${this.roomData.wordHint || 'Write a funny sentence using this spelling word!'}"
+                  <p id="tv-target-hint" class="text-slate-300 text-sm lg:text-base mt-0.5 italic max-w-xl">
+                    "${this.roomData.wordHint || 'Write a funny sentence containing this word!'}"
                   </p>
                 </div>
               </div>
 
-              <!-- Right Banner: Big Room Join Instructions -->
-              <div class="bg-slate-950/80 border border-slate-700/80 rounded-2xl p-4 lg:p-5 text-right flex items-center space-x-6 z-10 w-full lg:w-auto justify-between lg:justify-end">
+              <!-- Big Room Code Banner -->
+              <div class="bg-slate-950/90 border border-slate-800 rounded-2xl p-3.5 lg:p-4 text-right flex items-center space-x-5 z-10 w-full lg:w-auto justify-between lg:justify-end">
                 <div>
-                  <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Join On Chromebooks</p>
-                  <p class="text-xs text-slate-300">Enter Class Room Code:</p>
+                  <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Chromebook Join Code</p>
+                  <p class="text-xs text-slate-300">Enter in student view</p>
                 </div>
-                <div class="bg-gradient-to-r from-brand-500/20 to-accent-purple/20 border-2 border-brand-400/80 px-6 py-2.5 rounded-xl shadow-lg">
+                <div class="bg-gradient-to-r from-brand-500/20 to-accent-purple/20 border-2 border-brand-400/80 px-5 py-2 rounded-xl shadow-md">
                   <span id="tv-room-code-display" class="font-mono text-3xl lg:text-4xl font-black tracking-widest text-brand-300">
                     ${this.roomCode}
                   </span>
@@ -655,19 +656,19 @@
 
             </div>
 
-            <!-- MAIN SUBMISSIONS GRID CONTAINER -->
+            <!-- SUBMISSIONS CARD GRID -->
             <div class="flex-1 overflow-y-auto pr-1">
-              <div id="tv-submissions-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-5">
-                <!-- Submission Cards dynamically populated -->
+              <div id="tv-submissions-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                <!-- Cards dynamically populated -->
               </div>
             </div>
 
-            <!-- BOTTOM TEACHER CONTROL TOOLBAR -->
-            <div class="mt-4 pt-4 border-t border-slate-800 flex flex-wrap items-center justify-between gap-3 shrink-0 bg-slate-950/90 rounded-2xl p-3 border border-slate-800">
+            <!-- TEACHER CONTROL TOOLBAR -->
+            <div id="tv-controls-bar" class="mt-4 pt-3 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-3 shrink-0 bg-slate-900/90 rounded-2xl p-3 border border-slate-800">
               <div class="flex items-center space-x-2">
                 <button onclick="app.openWordManagerModal()" class="px-4 py-2 bg-brand-600 hover:bg-brand-500 text-white font-bold text-xs lg:text-sm rounded-xl shadow transition-all flex items-center space-x-2">
                   <i class="fa-solid fa-list-check"></i>
-                  <span>Manage Spelling Words</span>
+                  <span>Word List Manager</span>
                 </button>
                 
                 <button onclick="app.cycleNextWord()" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs lg:text-sm rounded-xl border border-slate-700 transition-all flex items-center space-x-1.5">
@@ -676,21 +677,26 @@
                 </button>
               </div>
 
-              <!-- Toggle Options -->
+              <!-- Toggles & Tools -->
               <div class="flex items-center space-x-2">
                 <button id="toggle-anon-btn" onclick="app.toggleAnonymous()" class="px-3 py-2 ${this.roomData.isAnonymous ? 'bg-accent-purple text-white' : 'bg-slate-800 text-slate-300'} hover:opacity-90 font-semibold text-xs lg:text-sm rounded-xl border border-slate-700 transition-all flex items-center space-x-2">
                   <i class="fa-solid ${this.roomData.isAnonymous ? 'fa-user-ninja' : 'fa-user'}"></i>
-                  <span>${this.roomData.isAnonymous ? 'Names: Hidden' : 'Names: Visible'}</span>
+                  <span>${this.roomData.isAnonymous ? 'Guess Who: ON' : 'Names: Visible'}</span>
                 </button>
 
                 <button id="toggle-mask-btn" onclick="app.toggleMasked()" class="px-3 py-2 ${this.roomData.isMasked ? 'bg-amber-600 text-white' : 'bg-slate-800 text-slate-300'} hover:opacity-90 font-semibold text-xs lg:text-sm rounded-xl border border-slate-700 transition-all flex items-center space-x-2">
                   <i class="fa-solid ${this.roomData.isMasked ? 'fa-eye-slash' : 'fa-eye'}"></i>
-                  <span>${this.roomData.isMasked ? 'Sentences: Masked' : 'Sentences: Unmasked'}</span>
+                  <span>${this.roomData.isMasked ? 'Text: Masked' : 'Text: Revealed'}</span>
+                </button>
+
+                <button onclick="app.openPrintSummaryModal()" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs lg:text-sm rounded-xl border border-slate-700 transition-all flex items-center space-x-1.5">
+                  <i class="fa-solid fa-print text-amber-400"></i>
+                  <span>Print Summary</span>
                 </button>
 
                 <button onclick="app.clearSubmissions()" class="px-3 py-2 bg-rose-950/60 hover:bg-rose-900/80 text-rose-300 font-semibold text-xs lg:text-sm rounded-xl border border-rose-800/80 transition-all flex items-center space-x-1.5">
                   <i class="fa-solid fa-trash-can"></i>
-                  <span>Clear Round</span>
+                  <span>Clear</span>
                 </button>
               </div>
             </div>
@@ -705,18 +711,18 @@
         const wordEl = document.getElementById('tv-target-word');
         const hintEl = document.getElementById('tv-target-hint');
         if (wordEl) wordEl.innerText = this.roomData.activeWord;
-        if (hintEl) hintEl.innerText = `"${this.roomData.wordHint || 'Write a funny sentence using this spelling word!'}"`;
+        if (hintEl) hintEl.innerText = `"${this.roomData.wordHint || 'Write a funny sentence containing this word!'}"`;
 
         const anonBtn = document.getElementById('toggle-anon-btn');
         if (anonBtn) {
           anonBtn.className = `px-3 py-2 ${this.roomData.isAnonymous ? 'bg-accent-purple text-white' : 'bg-slate-800 text-slate-300'} hover:opacity-90 font-semibold text-xs lg:text-sm rounded-xl border border-slate-700 transition-all flex items-center space-x-2`;
-          anonBtn.innerHTML = `<i class="fa-solid ${this.roomData.isAnonymous ? 'fa-user-ninja' : 'fa-user'}"></i><span>${this.roomData.isAnonymous ? 'Names: Hidden' : 'Names: Visible'}</span>`;
+          anonBtn.innerHTML = `<i class="fa-solid ${this.roomData.isAnonymous ? 'fa-user-ninja' : 'fa-user'}"></i><span>${this.roomData.isAnonymous ? 'Guess Who: ON' : 'Names: Visible'}</span>`;
         }
 
         const maskBtn = document.getElementById('toggle-mask-btn');
         if (maskBtn) {
           maskBtn.className = `px-3 py-2 ${this.roomData.isMasked ? 'bg-amber-600 text-white' : 'bg-slate-800 text-slate-300'} hover:opacity-90 font-semibold text-xs lg:text-sm rounded-xl border border-slate-700 transition-all flex items-center space-x-2`;
-          maskBtn.innerHTML = `<i class="fa-solid ${this.roomData.isMasked ? 'fa-eye-slash' : 'fa-eye'}"></i><span>${this.roomData.isMasked ? 'Sentences: Masked' : 'Sentences: Unmasked'}</span>`;
+          maskBtn.innerHTML = `<i class="fa-solid ${this.roomData.isMasked ? 'fa-eye-slash' : 'fa-eye'}"></i><span>${this.roomData.isMasked ? 'Text: Masked' : 'Text: Revealed'}</span>`;
         }
       }
 
@@ -726,13 +732,13 @@
 
         if (this.submissions.length === 0) {
           grid.innerHTML = `
-            <div class="col-span-full py-16 flex flex-col items-center justify-center text-center border-2 border-dashed border-slate-800 rounded-3xl p-8">
-              <div class="w-20 h-20 rounded-full bg-slate-800/80 text-brand-400 flex items-center justify-center text-4xl mb-4 animate-bounce-gentle">
+            <div class="col-span-full py-20 flex flex-col items-center justify-center text-center border-2 border-dashed border-slate-800 rounded-3xl p-8">
+              <div class="w-20 h-20 rounded-full bg-slate-900 text-brand-400 flex items-center justify-center text-4xl mb-4 animate-bounce-gentle border border-slate-800">
                 <i class="fa-solid fa-paper-plane"></i>
               </div>
-              <h3 class="font-display text-2xl font-bold text-slate-200">Waiting for Student Sentences...</h3>
+              <h3 class="font-display text-2xl font-bold text-slate-200">Waiting for Sentences...</h3>
               <p class="text-slate-400 text-sm mt-1 max-w-md">
-                Students join on Chromebooks using room code <span class="font-mono font-bold text-brand-400">${this.roomCode}</span> and type a funny sentence containing <span class="font-bold text-amber-400 uppercase">"${this.roomData.activeWord}"</span>.
+                Students log in on Chromebooks with room code <span class="font-mono font-bold text-brand-400">${this.roomCode}</span> and write funny sentences with word <span class="font-bold text-amber-400 uppercase">"${this.roomData.activeWord}"</span>.
               </p>
             </div>
           `;
@@ -743,13 +749,15 @@
           const isStarred = sub.starred || false;
           const maskedClass = this.roomData.isMasked ? 'masked-text' : '';
           const highlightedSentence = this.highlightWordInText(sub.sentence, this.roomData.activeWord);
-          const displayName = this.roomData.isAnonymous ? `Secret Word Author #${idx + 1}` : sub.studentName;
+          const displayName = this.roomData.isAnonymous ? `Secret Writer #${idx + 1}` : `${sub.avatar || '🦊'} ${sub.studentName}`;
+          
+          const reactions = sub.reactions || { '😂': 0, '🌟': 0, '🧠': 0, '🎨': 0 };
 
           return `
-            <div id="sub-card-${sub.id}" class="bg-slate-900 border-2 ${isStarred ? 'card-star-glow border-amber-400' : 'border-slate-800'} rounded-2xl p-5 flex flex-col justify-between shadow-xl animate-pop-in relative transition-all group hover:border-slate-700">
+            <div id="sub-card-${sub.id}" class="bg-slate-900 border-2 ${isStarred ? 'card-starred' : 'border-slate-800'} rounded-2xl p-5 flex flex-col justify-between shadow-xl animate-pop-in relative transition-all group hover:border-slate-700">
               <div>
                 <!-- Card Header -->
-                <div class="flex items-center justify-between mb-3 border-b border-slate-800/80 pb-2">
+                <div class="flex items-center justify-between mb-3 border-b border-slate-800 pb-2.5">
                   <div class="flex items-center space-x-2">
                     <span class="w-7 h-7 rounded-lg bg-slate-800 text-slate-300 font-bold text-xs flex items-center justify-center border border-slate-700">
                       ${idx + 1}
@@ -762,34 +770,50 @@
                   ${isStarred ? `
                     <span class="px-2.5 py-0.5 rounded-full bg-amber-400/20 text-amber-300 font-extrabold text-xs border border-amber-400/50 flex items-center space-x-1">
                       <i class="fa-solid fa-star text-amber-400"></i>
-                      <span>STAR SENTENCE</span>
+                      <span>STAR</span>
                     </span>
                   ` : ''}
                 </div>
 
-                <!-- Sentence Body -->
-                <p class="text-lg lg:text-xl font-medium text-slate-100 leading-relaxed my-3 ${maskedClass}">
+                <!-- Sentence Content -->
+                <p class="text-lg lg:text-xl font-medium text-slate-100 leading-relaxed my-2 ${maskedClass}">
                   "${highlightedSentence}"
                 </p>
               </div>
 
-              <!-- Card Footer Action Toolbar -->
-              <div class="mt-4 pt-3 border-t border-slate-800/60 flex items-center justify-between text-xs">
-                <span class="text-slate-500 font-mono text-[11px]">
-                  ${sub.word ? `Word: ${sub.word}` : ''}
-                </span>
+              <!-- Reactions & Actions Toolbar -->
+              <div class="mt-4 pt-3 border-t border-slate-800/80 space-y-2">
+                <!-- Live Emoji Reaction Counters -->
+                <div class="flex items-center justify-between bg-slate-950/60 p-2 rounded-xl border border-slate-800">
+                  <span class="text-[10px] font-bold uppercase text-slate-500">Reactions:</span>
+                  <div class="flex items-center space-x-1.5">
+                    ${['😂', '🌟', '🧠', '🎨'].map(emoji => `
+                      <button onclick="app.addReaction('${sub.id}', '${emoji}')" class="px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-300 border border-slate-700 transition-all flex items-center space-x-1 active:scale-95">
+                        <span>${emoji}</span>
+                        <span class="text-[10px] text-brand-300">${reactions[emoji] || 0}</span>
+                      </button>
+                    `).join('')}
+                  </div>
+                </div>
 
-                <div class="flex items-center space-x-1.5">
-                  <button onclick="app.spotlightCard('${sub.id}')" title="Full Screen Spotlight" class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300">
-                    <i class="fa-solid fa-expand"></i>
-                  </button>
-                  <button onclick="app.toggleStarSubmission('${sub.id}', ${!isStarred})" title="Star / Favorite Sentence" class="px-2.5 py-1 rounded-lg ${isStarred ? 'bg-amber-500 text-slate-950 font-bold' : 'bg-slate-800 hover:bg-amber-500/20 text-amber-400'} border border-slate-700 transition-all flex items-center space-x-1">
-                    <i class="fa-solid fa-star"></i>
-                    <span>${isStarred ? 'Starred' : 'Star'}</span>
-                  </button>
-                  <button onclick="app.deleteSubmission('${sub.id}')" title="Delete" class="p-1.5 rounded-lg bg-slate-800 hover:bg-rose-900/50 text-slate-400 hover:text-rose-300">
-                    <i class="fa-solid fa-xmark"></i>
-                  </button>
+                <!-- Actions -->
+                <div class="flex items-center justify-between text-xs pt-1">
+                  <span class="text-slate-500 font-mono text-[11px]">
+                    Word: <span class="text-slate-300 capitalize">${sub.word}</span>
+                  </span>
+
+                  <div class="flex items-center space-x-1.5">
+                    <button onclick="app.openSpotlight(${idx})" title="Spotlight Presentation Mode" class="px-2.5 py-1 rounded-lg bg-brand-600 hover:bg-brand-500 text-white font-bold transition-all flex items-center space-x-1">
+                      <i class="fa-solid fa-expand"></i>
+                      <span>Spotlight</span>
+                    </button>
+                    <button onclick="app.toggleStarSubmission('${sub.id}', ${!isStarred})" title="Award Star" class="px-2.5 py-1 rounded-lg ${isStarred ? 'bg-amber-400 text-slate-950 font-bold' : 'bg-slate-800 hover:bg-amber-500/20 text-amber-400'} border border-slate-700 transition-all flex items-center space-x-1">
+                      <i class="fa-solid fa-star"></i>
+                    </button>
+                    <button onclick="app.deleteSubmission('${sub.id}')" title="Delete" class="p-1.5 rounded-lg bg-slate-800 hover:bg-rose-900/50 text-slate-400 hover:text-rose-300">
+                      <i class="fa-solid fa-xmark"></i>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -797,68 +821,80 @@
         }).join('');
       }
 
-      // --- STUDENT CHROMEBOOK MODE CONTROLLER ---
       renderStudentLayout() {
         const container = document.getElementById('view-container');
         container.innerHTML = `
           <div class="h-full flex flex-col bg-slate-950 p-4 max-w-2xl mx-auto w-full justify-between overflow-y-auto">
             
-            <!-- Student Header Prompt -->
             <div class="space-y-4">
-              <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex items-center justify-between">
-                <div>
-                  <p class="text-xs font-semibold text-slate-400 uppercase">Writer Chromebook</p>
-                  <p class="font-bold text-white text-lg">${this.studentName}</p>
+              <!-- Student Profile Header -->
+              <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex items-center justify-between shadow-md">
+                <div class="flex items-center space-x-3">
+                  <span class="text-3xl">${this.studentAvatar}</span>
+                  <div>
+                    <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Student Writer</p>
+                    <p class="font-bold text-white text-base">${this.studentName}</p>
+                  </div>
                 </div>
                 <div class="text-right">
-                  <p class="text-xs font-semibold text-slate-400 uppercase">Room</p>
-                  <p class="font-mono font-extrabold text-brand-400 text-lg">${this.roomCode}</p>
+                  <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Classroom Room</p>
+                  <p class="font-mono font-black text-brand-400 text-base tracking-wider">${this.roomCode}</p>
                 </div>
               </div>
 
-              <!-- Active Word Alert Card -->
+              <!-- Active Word Target Box -->
               <div class="bg-gradient-to-br from-slate-900 via-slate-850 to-slate-900 border-2 border-brand-500/50 rounded-2xl p-5 shadow-xl relative">
                 <div class="flex items-center justify-between mb-1">
-                  <span class="text-xs font-bold uppercase text-brand-400 tracking-wider">Active Spelling Word</span>
+                  <span class="text-xs font-extrabold uppercase text-brand-400 tracking-wider">Target Spelling Word</span>
                   <button onclick="app.speakWord()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-1 rounded-lg border border-slate-700">
                     <i class="fa-solid fa-volume-high text-brand-400 mr-1"></i> Hear Word
                   </button>
                 </div>
-                <h3 id="student-target-word" class="font-display text-3xl font-extrabold text-white capitalize">
-                  ${this.roomData.activeWord}
-                </h3>
+
+                <!-- Word Picker Dropdown if teacher has list -->
+                <div class="flex items-center justify-between gap-3">
+                  <h3 id="student-target-word" class="font-display text-3xl font-black text-white capitalize tracking-wide">
+                    ${this.roomData.activeWord}
+                  </h3>
+
+                  ${(this.roomData.wordList || []).length > 1 ? `
+                    <select id="student-word-select" onchange="app.studentSelectWord(this.value)" class="bg-slate-950 border border-slate-700 text-brand-300 text-xs font-bold rounded-xl px-3 py-1.5 focus:outline-none">
+                      ${(this.roomData.wordList || []).map(w => `<option value="${w.word}" ${w.word.toLowerCase() === this.roomData.activeWord.toLowerCase() ? 'selected' : ''}>Target: ${w.word}</option>`).join('')}
+                    </select>
+                  ` : ''}
+                </div>
+
                 <p id="student-target-hint" class="text-slate-300 text-xs italic mt-1">
                   "${this.roomData.wordHint || 'Write a funny sentence incorporating this word!'}"
                 </p>
               </div>
 
-              <!-- Writing Input Area -->
+              <!-- Interactive Text Area -->
               <div class="space-y-2">
                 <div class="flex items-center justify-between">
-                  <label class="text-xs font-semibold text-slate-300 uppercase">Write Your Funny Sentence</label>
-                  <span id="target-word-checker-badge" class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-400 border border-slate-700">
+                  <label class="text-xs font-bold text-slate-300 uppercase tracking-wider">Write Your Funny Sentence</label>
+                  <span id="target-word-checker-badge" class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-400 border border-slate-700 transition-all">
                     <i class="fa-solid fa-circle-xmark text-rose-400 mr-1"></i> Missing Target Word
                   </span>
                 </div>
 
                 <textarea id="student-sentence-input" rows="4" 
                   oninput="app.validateStudentInput()"
-                  placeholder="e.g. My mischievous cat tried to order a pizza on my laptop..."
+                  placeholder="e.g. The ancient dinosaur accidentally ate my homework during math class..."
                   class="w-full bg-slate-900/90 border-2 border-slate-700 focus:border-brand-400 rounded-2xl p-4 text-slate-100 text-base font-medium placeholder-slate-500 focus:outline-none transition-all shadow-inner resize-none"></textarea>
               </div>
             </div>
 
-            <!-- Submission Area -->
-            <div class="mt-4 pt-4 space-y-3">
+            <!-- Submit Section -->
+            <div class="mt-4 pt-3 space-y-3">
               <button id="student-submit-btn" onclick="app.submitStudentSentence()" disabled
                 class="w-full py-4 bg-slate-800 text-slate-500 font-display font-bold text-lg rounded-2xl shadow-xl transition-all flex items-center justify-center space-x-2 cursor-not-allowed">
                 <i class="fa-solid fa-paper-plane"></i>
                 <span>Submit Sentence to TV Screen</span>
               </button>
 
-              <!-- Recent Submissions Preview List for Student -->
               <div id="student-status-preview" class="space-y-2">
-                <!-- Status & previous entries -->
+                <!-- Submissions status injected here -->
               </div>
             </div>
 
@@ -877,6 +913,13 @@
         this.validateStudentInput();
       }
 
+      studentSelectWord(word) {
+        this.roomData.activeWord = word;
+        const found = (this.roomData.wordList || []).find(w => w.word.toLowerCase() === word.toLowerCase());
+        this.roomData.wordHint = found ? found.hint : '';
+        this.updateStudentTargetWord();
+      }
+
       validateStudentInput() {
         const input = document.getElementById('student-sentence-input');
         const badge = document.getElementById('target-word-checker-badge');
@@ -889,19 +932,18 @@
 
         if (!target) return;
 
-        // Regex validation (case-insensitive search)
         const regex = new RegExp(`\\b${this.escapeRegExp(target)}\\b`, 'i');
         const containsWord = regex.test(text);
 
         if (containsWord) {
-          badge.className = "text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40";
+          badge.className = "text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 animate-pop-in";
           badge.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-400 mr-1"></i> Target Word Included!`;
           
           submitBtn.disabled = false;
           submitBtn.className = "w-full py-4 bg-gradient-to-r from-brand-500 via-brand-600 to-accent-purple hover:opacity-95 text-white font-display font-bold text-lg rounded-2xl shadow-xl shadow-brand-500/30 transition-all active:scale-[0.98] flex items-center justify-center space-x-2 cursor-pointer";
         } else {
           badge.className = "text-xs font-bold px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-400 border border-slate-700";
-          badge.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-400 mr-1"></i> Include: "${target}"`;
+          badge.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-400 mr-1"></i> Include word: "${target}"`;
 
           submitBtn.disabled = true;
           submitBtn.className = "w-full py-4 bg-slate-800 text-slate-500 font-display font-bold text-lg rounded-2xl shadow-xl transition-all flex items-center justify-center space-x-2 cursor-not-allowed";
@@ -915,34 +957,37 @@
         const sentence = input.value.trim();
         if (!sentence) return;
 
-        audio.submit();
+        audio.submitPop();
         this.triggerConfetti();
 
         const submissionData = {
           roomCode: this.roomCode,
           studentName: this.studentName,
+          avatar: this.studentAvatar,
           word: this.roomData.activeWord,
           sentence: sentence,
           starred: false,
+          reactions: { '😂': 0, '🌟': 0, '🧠': 0, '🎨': 0 },
           createdAt: Date.now()
         };
 
-        if (this.isOnline && db) {
+        if (this.isOnline && this.db) {
           try {
-            const colRef = collection(db, 'artifacts', appId, 'public', 'data', 'showcase_submissions');
+            // Path: /artifacts/{appId}/public/data/spelling_submissions
+            const colRef = collection(this.db, 'artifacts', appId, 'public', 'data', 'spelling_submissions');
             await addDoc(colRef, submissionData);
           } catch (e) {
-            console.error("Error posting submission:", e);
+            console.error("Error submitting sentence to Firestore:", e);
           }
         } else {
-          // Local fallback memory
+          // Local fallback
           this.submissions.unshift({ ...submissionData, id: 'sub_' + Date.now() });
           this.renderStudentStatus();
         }
 
         input.value = '';
         this.validateStudentInput();
-        this.showToast("Sentence sent to the big TV screen! 🎉");
+        this.showToast("Sentence sent directly to TV Screen! 🎉", "success");
       }
 
       renderStudentStatus() {
@@ -957,19 +1002,24 @@
         }
 
         preview.innerHTML = `
-          <div class="mt-4 border-t border-slate-800 pt-3">
-            <p class="text-xs font-semibold text-slate-400 uppercase mb-2">Your Sentences Sent To TV (${mySubmissions.length})</p>
-            <div class="space-y-2 max-h-40 overflow-y-auto">
+          <div class="mt-4 border-t border-slate-800/80 pt-3">
+            <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">My TV Showcase Submissions (${mySubmissions.length})</p>
+            <div class="space-y-2 max-h-36 overflow-y-auto">
               ${mySubmissions.map(s => `
                 <div class="bg-slate-900 border border-slate-800 rounded-xl p-3 text-xs flex justify-between items-center">
                   <p class="text-slate-200 font-medium italic truncate mr-2">"${s.sentence}"</p>
-                  ${s.starred ? `
-                    <span class="text-amber-400 font-bold flex items-center shrink-0">
-                      <i class="fa-solid fa-star mr-1"></i> Starred!
-                    </span>
-                  ` : `
-                    <span class="text-emerald-400 font-semibold shrink-0">On TV Screen</span>
-                  `}
+                  <div class="flex items-center space-x-2 shrink-0">
+                    ${s.starred ? `
+                      <span class="text-amber-400 font-bold flex items-center bg-amber-400/10 px-2 py-0.5 rounded border border-amber-400/30">
+                        <i class="fa-solid fa-star mr-1"></i> Starred!
+                      </span>
+                    ` : `
+                      <span class="text-emerald-400 font-semibold">On TV</span>
+                    `}
+                    <button onclick="app.deleteSubmission('${s.id}')" class="text-slate-500 hover:text-rose-400 p-1">
+                      <i class="fa-solid fa-trash"></i>
+                    </button>
+                  </div>
                 </div>
               `).join('')}
             </div>
@@ -977,7 +1027,6 @@
         `;
       }
 
-      // --- WORD & TARGET MANIPULATION LOGIC ---
       async cycleNextWord() {
         const list = this.roomData.wordList || SPELLING_PRESETS["Grade 4/5 Tricky Words"];
         let nextIndex = (this.roomData.currentWordIndex || 0) + 1;
@@ -991,7 +1040,7 @@
         audio.wordChange();
         await this.saveRoomData();
         this.renderCurrentMode();
-        this.showToast(`Switched target word to "${nextObj.word.toUpperCase()}"!`);
+        this.showToast(`Switched target word to "${nextObj.word.toUpperCase()}"!`, "info");
       }
 
       async toggleAnonymous() {
@@ -1002,20 +1051,38 @@
 
       async toggleMasked() {
         this.roomData.isMasked = !this.roomData.isMasked;
-        audio.reveal();
         await this.saveRoomData();
         this.renderCurrentMode();
       }
 
+      async addReaction(subId, emoji) {
+        audio.wordChange();
+        const sub = this.submissions.find(s => s.id === subId);
+        if (!sub) return;
+
+        const reactions = sub.reactions || { '😂': 0, '🌟': 0, '🧠': 0, '🎨': 0 };
+        reactions[emoji] = (reactions[emoji] || 0) + 1;
+
+        if (this.isOnline && this.db) {
+          try {
+            const docRef = doc(this.db, 'artifacts', appId, 'public', 'data', 'spelling_submissions', subId);
+            await updateDoc(docRef, { reactions });
+          } catch(e) { console.error("Error updating reaction:", e); }
+        } else {
+          sub.reactions = reactions;
+          this.renderTVSubmissions();
+        }
+      }
+
       async toggleStarSubmission(subId, starState) {
         if (starState) {
-          audio.star();
+          audio.starFanfare();
           this.triggerConfetti();
         }
 
-        if (this.isOnline && db) {
+        if (this.isOnline && this.db) {
           try {
-            const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'showcase_submissions', subId);
+            const docRef = doc(this.db, 'artifacts', appId, 'public', 'data', 'spelling_submissions', subId);
             await updateDoc(docRef, { starred: starState });
           } catch(e) { console.error("Error starring doc:", e); }
         } else {
@@ -1026,9 +1093,9 @@
       }
 
       async deleteSubmission(subId) {
-        if (this.isOnline && db) {
+        if (this.isOnline && this.db) {
           try {
-            const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'showcase_submissions', subId);
+            const docRef = doc(this.db, 'artifacts', appId, 'public', 'data', 'spelling_submissions', subId);
             await deleteDoc(docRef);
           } catch(e) { console.error("Error deleting doc:", e); }
         } else {
@@ -1038,10 +1105,10 @@
       }
 
       async clearSubmissions() {
-        if (this.isOnline && db) {
+        if (this.isOnline && this.db) {
           try {
             const promises = this.submissions.map(s => {
-              const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'showcase_submissions', s.id);
+              const docRef = doc(this.db, 'artifacts', appId, 'public', 'data', 'spelling_submissions', s.id);
               return deleteDoc(docRef);
             });
             await Promise.all(promises);
@@ -1050,10 +1117,70 @@
           this.submissions = [];
           this.renderTVSubmissions();
         }
-        this.showToast("Cleared current round submissions!");
+        this.showToast("Cleared current round submissions!", "info");
       }
 
-      // --- MODAL DIALOGS ---
+      openSpotlight(index) {
+        if (index < 0 || index >= this.submissions.length) return;
+        this.spotlightIndex = index;
+        audio.spotlightChime();
+
+        const sub = this.submissions[index];
+        const highlighted = this.highlightWordInText(sub.sentence, this.roomData.activeWord);
+        const modal = document.getElementById('modal-content');
+        const backdrop = document.getElementById('modal-backdrop');
+
+        modal.innerHTML = `
+          <div class="text-center space-y-6 py-4 relative">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+              <span class="px-4 py-1.5 rounded-full bg-brand-500/20 border border-brand-400 text-brand-300 font-extrabold text-xs uppercase tracking-wider">
+                ⭐ TV Presentation Spotlight (${index + 1} / ${this.submissions.length})
+              </span>
+              <button onclick="app.closeModal()" class="text-slate-400 hover:text-white text-xl">
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+            </div>
+
+            <!-- Full Screen Large Text Presentation -->
+            <div class="py-8 px-4 bg-slate-950/80 rounded-3xl border border-slate-800 shadow-inner">
+              <p class="font-display text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-relaxed tracking-wide">
+                "${highlighted}"
+              </p>
+            </div>
+
+            <!-- Spotlight Navigation Controls & Author -->
+            <div class="border-t border-slate-800 pt-5 flex flex-wrap items-center justify-between gap-4">
+              <div class="flex items-center space-x-3">
+                <span class="text-2xl">${sub.avatar || '🦊'}</span>
+                <span class="text-lg font-bold text-slate-300">
+                  <span class="text-slate-500 font-normal">Author:</span> 
+                  <span class="text-brand-300 font-black">${this.roomData.isAnonymous ? 'Secret Wordsmith' : sub.studentName}</span>
+                </span>
+              </div>
+
+              <!-- Prev / Next & Award Star Controls -->
+              <div class="flex items-center space-x-2">
+                <button onclick="app.openSpotlight(${index - 1})" ${index === 0 ? 'disabled class="opacity-40 cursor-not-allowed px-3 py-2 bg-slate-800 text-slate-400 font-bold rounded-xl text-sm"' : 'class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-xl text-sm transition-all"'}>
+                  <i class="fa-solid fa-arrow-left mr-1"></i> Prev
+                </button>
+
+                <button onclick="app.toggleStarSubmission('${sub.id}', ${!sub.starred})" class="px-4 py-2 bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold rounded-xl shadow transition-all flex items-center space-x-1 text-sm">
+                  <i class="fa-solid fa-star"></i>
+                  <span>${sub.starred ? 'Starred' : 'Award Star'}</span>
+                </button>
+
+                <button onclick="app.openSpotlight(${index + 1})" ${index === this.submissions.length - 1 ? 'disabled class="opacity-40 cursor-not-allowed px-3 py-2 bg-slate-800 text-slate-400 font-bold rounded-xl text-sm"' : 'class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-xl text-sm transition-all"'}>
+                  Next <i class="fa-solid fa-arrow-right ml-1"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+
+        backdrop.classList.remove('hidden');
+        this.triggerConfetti();
+      }
+
       openWordManagerModal() {
         const modal = document.getElementById('modal-content');
         const backdrop = document.getElementById('modal-backdrop');
@@ -1063,40 +1190,37 @@
             <div class="flex items-center justify-between border-b border-slate-800 pb-3">
               <h3 class="font-display text-xl font-bold text-white flex items-center space-x-2">
                 <i class="fa-solid fa-list-check text-brand-400"></i>
-                <span>Manage Class Spelling List</span>
+                <span>Classroom Spelling List Manager</span>
               </h3>
               <button onclick="app.closeModal()" class="text-slate-400 hover:text-white text-lg">
                 <i class="fa-solid fa-xmark"></i>
               </button>
             </div>
 
-            <!-- Preset Selector -->
             <div>
-              <label class="block text-xs font-semibold text-slate-400 uppercase mb-1">Load Preset Word Lists</label>
+              <label class="block text-xs font-bold text-slate-400 uppercase mb-1.5">Load Grade Presets</label>
               <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
                 ${Object.keys(SPELLING_PRESETS).map(key => `
-                  <button onclick="app.loadPresetList('${key}')" class="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 text-left transition-all">
+                  <button onclick="app.loadPresetList('${key}')" class="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold border border-slate-700 text-left transition-all">
                     <i class="fa-solid fa-book-bookmark text-brand-400 mr-1"></i> ${key}
                   </button>
                 `).join('')}
               </div>
             </div>
 
-            <!-- Custom Word Add Form -->
             <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-3">
-              <span class="text-xs font-bold uppercase text-amber-400">Add New Word To Active List</span>
+              <span class="text-xs font-bold uppercase text-amber-400">Add New Custom Spelling Word</span>
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <input type="text" id="modal-new-word" placeholder="Target Spelling Word" class="bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-brand-400">
-                <input type="text" id="modal-new-hint" placeholder="Short Hint or Definition" class="bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-brand-400">
+                <input type="text" id="modal-new-word" placeholder="Target Word" class="bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-brand-400">
+                <input type="text" id="modal-new-hint" placeholder="Short Hint / Definition" class="bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-brand-400">
               </div>
               <button onclick="app.addCustomWord()" class="w-full py-2 bg-brand-600 hover:bg-brand-500 text-white font-bold text-xs rounded-lg transition-all">
-                Add Word to List
+                Add Word to Class List
               </button>
             </div>
 
-            <!-- Current Word List Overview -->
             <div>
-              <label class="block text-xs font-semibold text-slate-400 uppercase mb-2">Current Active List (${(this.roomData.wordList || []).length} Words)</label>
+              <label class="block text-xs font-bold text-slate-400 uppercase mb-2">Active Word List (${(this.roomData.wordList || []).length} Words)</label>
               <div class="space-y-2 max-h-48 overflow-y-auto pr-1">
                 ${(this.roomData.wordList || []).map((w, idx) => `
                   <div class="p-3 rounded-xl ${w.word.toLowerCase() === this.roomData.activeWord.toLowerCase() ? 'bg-brand-500/20 border-2 border-brand-400' : 'bg-slate-800 border border-slate-700'} flex items-center justify-between">
@@ -1104,7 +1228,7 @@
                       <span class="font-bold text-white text-sm capitalize">${w.word}</span>
                       <p class="text-xs text-slate-400 italic">${w.hint || 'No hint'}</p>
                     </div>
-                    <button onclick="app.setWordActive(${idx})" class="px-3 py-1 rounded-lg bg-slate-700 hover:bg-brand-500 text-white font-semibold text-xs transition-all">
+                    <button onclick="app.setWordActive(${idx})" class="px-3 py-1 rounded-lg bg-slate-700 hover:bg-brand-500 text-white font-bold text-xs transition-all">
                       ${w.word.toLowerCase() === this.roomData.activeWord.toLowerCase() ? 'Active Now' : 'Set Active'}
                     </button>
                   </div>
@@ -1126,7 +1250,7 @@
           await this.saveRoomData();
           this.renderCurrentMode();
           this.openWordManagerModal();
-          this.showToast(`Loaded list: ${key}`);
+          this.showToast(`Loaded list: ${key}`, "info");
         }
       }
 
@@ -1147,7 +1271,7 @@
         await this.saveRoomData();
         this.renderCurrentMode();
         this.openWordManagerModal();
-        this.showToast(`Added "${word}" to spelling list!`);
+        this.showToast(`Added "${word}" to spelling list!`, "success");
       }
 
       async setWordActive(idx) {
@@ -1163,44 +1287,56 @@
         }
       }
 
-      spotlightCard(subId) {
-        const sub = this.submissions.find(s => s.id === subId);
-        if (!sub) return;
-
-        const highlighted = this.highlightWordInText(sub.sentence, this.roomData.activeWord);
+      openPrintSummaryModal() {
         const modal = document.getElementById('modal-content');
         const backdrop = document.getElementById('modal-backdrop');
 
         modal.innerHTML = `
-          <div class="text-center space-y-6 py-4">
-            <div class="inline-block px-4 py-1.5 rounded-full bg-brand-500/20 border border-brand-400 text-brand-300 font-bold text-sm uppercase tracking-wider">
-              ⭐ Spotlight Sentence Presentation ⭐
+          <div class="space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+              <h3 class="font-display text-xl font-bold text-white flex items-center space-x-2">
+                <i class="fa-solid fa-print text-amber-400"></i>
+                <span>Printable Class Sentence Summary</span>
+              </h3>
+              <button onclick="app.closeModal()" class="text-slate-400 hover:text-white text-lg">
+                <i class="fa-solid fa-xmark"></i>
+              </button>
             </div>
 
-            <p class="font-display text-3xl lg:text-4xl font-extrabold text-white leading-relaxed">
-              "${highlighted}"
-            </p>
+            <div id="print-area" class="bg-white text-slate-900 p-6 rounded-2xl max-h-96 overflow-y-auto space-y-4">
+              <div class="border-b pb-3 flex justify-between items-center">
+                <div>
+                  <h2 class="text-xl font-bold text-slate-900">Spelling Sentence Showcase Summary</h2>
+                  <p class="text-xs text-slate-600">Room: <strong>${this.roomCode}</strong> • Word: <strong class="capitalize">${this.roomData.activeWord}</strong></p>
+                </div>
+                <span class="text-xs text-slate-500">${new Date().toLocaleDateString()}</span>
+              </div>
 
-            <div class="border-t border-slate-800 pt-4 flex items-center justify-between">
-              <span class="text-lg font-bold text-slate-300">
-                Author: ${this.roomData.isAnonymous ? 'Secret Wordsmith' : sub.studentName}
-              </span>
-              <button onclick="app.closeModal()" class="px-5 py-2.5 bg-brand-600 hover:bg-brand-500 text-white font-bold rounded-xl transition-all">
-                Close Presentation
+              <div class="space-y-3">
+                ${this.submissions.map((s, idx) => `
+                  <div class="p-3 border rounded-xl print-card bg-slate-50">
+                    <p class="font-bold text-sm text-slate-800 mb-1">${idx + 1}. ${s.avatar || ''} ${s.studentName} ${s.starred ? '⭐ (Starred)' : ''}</p>
+                    <p class="text-base text-slate-900 font-medium">"${s.sentence}"</p>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+
+            <div class="flex justify-end space-x-2 pt-2">
+              <button onclick="window.print()" class="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-xs rounded-xl shadow">
+                <i class="fa-solid fa-print mr-1"></i> Print / Save PDF
               </button>
             </div>
           </div>
         `;
 
         backdrop.classList.remove('hidden');
-        this.triggerConfetti();
       }
 
       closeModal() {
         document.getElementById('modal-backdrop').classList.add('hidden');
       }
 
-      // --- UTILITIES & HELPERS ---
       highlightWordInText(text, targetWord) {
         if (!text || !targetWord) return text || '';
         const escaped = this.escapeRegExp(targetWord.trim());
@@ -1223,31 +1359,30 @@
       triggerConfetti() {
         if (typeof confetti === 'function') {
           confetti({
-            particleCount: 70,
-            spread: 60,
+            particleCount: 80,
+            spread: 70,
             origin: { y: 0.6 }
           });
         }
       }
 
-      showToast(msg) {
+      showToast(msg, type = "info") {
         const existing = document.getElementById('app-toast');
         if (existing) existing.remove();
 
         const toast = document.createElement('div');
         toast.id = 'app-toast';
-        toast.className = 'fixed bottom-6 right-6 bg-slate-800 border-2 border-brand-400 text-white font-bold text-sm px-5 py-3 rounded-2xl shadow-2xl z-50 animate-pop-in flex items-center space-x-2';
+        toast.className = `fixed bottom-6 right-6 border-2 text-white font-bold text-xs sm:text-sm px-5 py-3 rounded-2xl shadow-2xl z-50 animate-pop-in flex items-center space-x-2 ${type === 'warning' ? 'bg-rose-900 border-rose-500' : type === 'success' ? 'bg-emerald-900 border-emerald-500' : 'bg-slate-800 border-brand-400'}`;
         toast.innerHTML = `<i class="fa-solid fa-circle-info text-brand-400"></i><span>${msg}</span>`;
         document.body.appendChild(toast);
 
         setTimeout(() => {
           if (toast) toast.remove();
-        }, 3000);
+        }, 3200);
       }
     }
 
-    // Attach App instance globally
-    window.app = new App();
+    window.app = new SpellingShowcaseApp();
 
     window.addEventListener('DOMContentLoaded', () => {
       window.app.init();
