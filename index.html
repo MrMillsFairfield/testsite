@@ -1,4 +1,70 @@
 <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Real-Time Sync App</title>
+</head>
+<body>
+  <h1>Real-Time Data Display</h1>
+  
+  <!-- UI elements to view and update data -->
+  <div id="data-container">Loading...</div>
+  
+  <input type="text" id="message-input" placeholder="Type a message..." />
+  <button id="send-btn">Send</button>
+
+  <script type="module">
+    // Import the required Firebase modules from CDN
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+    // 1. Paste your Firebase configuration object here
+    const firebaseConfig = {
+  apiKey: "AIzaSyBiN28Vr4sFtboTREYZ47Ljo9NfVp63FeY",
+  authDomain: "spelling-review-13bdb.firebaseapp.com",
+  databaseURL: "https://spelling-review-13bdb-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "spelling-review-13bdb",
+  storageBucket: "spelling-review-13bdb.firebasestorage.app",
+  messagingSenderId: "980072699869",
+  appId: "1:980072699869:web:7af467a9f6cd0497868834",
+  measurementId: "G-W9C9B2R44V"
+    };
+
+    // 2. Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    const dataContainer = document.getElementById("data-container");
+    const messageInput = document.getElementById("message-input");
+    const sendBtn = document.getElementById("send-btn");
+
+    // 3. LISTEN FOR REAL-TIME UPDATES
+    // 'onValue' fires once initially and again whenever data at the path updates
+    const messageRef = ref(db, 'liveData/message');
+    
+    onValue(messageRef, (snapshot) => {
+      const data = snapshot.val();
+      dataContainer.innerText = data ? data : "No data set yet.";
+    });
+
+    // 4. WRITE DATA TO FIREBASE
+    sendBtn.addEventListener("click", () => {
+      const text = messageInput.value;
+      if (text.trim() !== "") {
+        set(messageRef, text)
+          .then(() => {
+            messageInput.value = "";
+          })
+          .catch((error) => {
+            console.error("Error writing data: ", error);
+          });
+      }
+    });
+  </script>
+</body>
+</html>
+<!DOCTYPE html>
 <html lang="en" class="h-full bg-slate-900 text-slate-100 font-sans">
 <head>
   <meta charset="UTF-8">
